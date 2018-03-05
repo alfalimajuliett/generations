@@ -2,25 +2,28 @@ import math
 
 #@memoization
 
+#From Buckley et al. 2006: http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2664.2005.00991.x/epdf
+
 #####################
 # Seedbank function #
 #####################
 class Buckley(object):
-    def __init__(self, probability_of_decay, probability_of_germination, maximum_plant_fecundity, fecundity_to_biomass, seedling_survival_to_flowering, seed_incorporation_rate, damage_function_shape, attrition):
-        self.probability_of_decay = 0.5
-        self.probability_of_germination = 0.6
-        self.maximum_plant_fecundity = 1
-        self.fecundity_to_biomass = .025 # default for now. Equal to f(gsS(t-1) when there is no density dependence)
-        self.seedling_survival_to_flowering = 1
-        self.seed_incorporation_rate = 1
-        self.damage_function_shape = .014
-        self.weevil_population = 30
-        self,weevil_attack_rate = .005
-        self.larval_survival = 0.33
+    def __init__(self, initial_seedbank=None, probability_of_decay=None, probability_of_germination=None, maximum_plant_fecundity=None, fecundity_to_biomass=None, seedling_survival_to_flowering=None, seed_incorporation_rate=None, damage_function_shape=None, weevil_population=None, weevil_attack_rate=None, larval_survival=None):
+        self.initial_seedbank = initial_seedbank or 400
+        self.probability_of_decay = probability_of_decay or 0.5
+        self.probability_of_germination = probability_of_germination or 0.6
+        self.maximum_plant_fecundity = maximum_plant_fecundity or 1
+        self.fecundity_to_biomass = fecundity_to_biomass or .025 # default for now. Equal to f(gsS(t-1) when there is no density dependence)
+        self.seedling_survival_to_flowering = seedling_survival_to_flowering or 1
+        self.seed_incorporation_rate = seed_incorporation_rate or 1
+        self.damage_function_shape = damage_function_shape or .014
+        self.weevil_population = weevil_population or 30
+        self.weevil_attack_rate = weevil_attack_rate or .005
+        self.larval_survival = larval_survival or 0.33
 
     def seedbank(self, gen):
         if gen == 0:
-            return 0
+            return self.initial_seedbank
         else:
             attrition_by_weevil = (self.damage_function_shape*self.weevil_attack_rate*self.weevil(gen-1))/self.fecundity_to_biomass*self.maximum_plant_fecundity
             return ((1-self.probability_of_decay)*(1-self.probability_of_germination)*self.seedbank(gen-1))+self.seedbank(gen-1)*self.probability_of_germination*self.seedling_survival_to_flowering*self.seed_incorporation_rate*self.maximum_plant_fecundity*math.e**(attrition_by_weevil)

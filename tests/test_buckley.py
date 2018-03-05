@@ -2,30 +2,24 @@ from generations.buckley import Buckley
 
 import unittest
 
-class TestStringMethods(unittest.TestCase):
+class TestBuckley(unittest.TestCase):
     def test_has_defaults(self):
         b = Buckley()
-        self.assertEqual(30, b.weevil_population)
+        self.assertEqual(400, b.initial_seedbank)
 
     def test_takes_kwarg(self):
-        b = Buckley(weevil_population=200)
-        self.assertEqual(200, nb.initial_host_population)
+        b = Buckley(initial_seedbank=200)
+        self.assertEqual(200, b.initial_seedbank)
 
     def test_takes_arguments(self):
-        nb = NicholsonBailey(300)
-        self.assertEqual(300, nb.initial_host_population)
+        b = Buckley(100)
+        self.assertEqual(100, b.initial_seedbank)
 
-    def test_host_population_at_time_zero_is_initial_host_population(self):
-        nb = NicholsonBailey(400)
-        self.assertEqual(400, nb.host_population_at_time(0))
-
-    def test_host_population_at_time_one(self):
-        nb = NicholsonBailey(500)
-        self.assertEqual(1213.061319425267, nb.host_population_at_time(1))
-
-    def test_host_population_at_time_two(self):
-        nb = NicholsonBailey(600)
-        self.assertEqual(0.043518818242168626, nb.host_population_at_time(2))
+    def test_seedbank(self):
+        b = Buckley()
+        self.assertEqual(400, b.seedbank(0))
+        self.assertEqual(341.03093451411826, b.seedbank(1))
+        self.assertEqual(279.7456497089459, b.seedbank(2))
 
 if __name__ == '__main__':
     unittest.main()
