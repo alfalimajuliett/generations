@@ -24,10 +24,16 @@ class NicholsonBailey(object):
             return self.viable_eggs_per_parasitoid * self.host_population_at_time(time-1) * (1-math.e**(-self.search_efficiency*self.parasitoid_population_at_time(time-1)))
 
 def make_table(): #loop for x amount of generations printing a row with numbers specified in make_row function
+    model = NicholsonBailey()
+    print ['Y', 'hosts', 'parasitoid']
     for t in range(5):
-        print make_row(t)
+        print make_row(model, t)
 
-def make_row(t):
-    h = hosts(t)
-    p = parasitoid(t)
+def make_row(model, t):
+    h = model.host_population_at_time(t)
+    p = model.parasitoid_population_at_time(t)
     return [t,int(round(h)),int(round(p))] #list will print as a row in make_table
+
+
+if __name__ == '__main__':
+    make_table()
