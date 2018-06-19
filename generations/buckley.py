@@ -40,3 +40,18 @@ class Buckley(object):
         else:
             return self.seedbank(gen-1)*self.probability_of_germination*self.seedling_survival_to_flowering*self.weevil(gen-1)*self.weevil_attack_rate*self.larval_survival
 #get weevil attack rate from CABI reports and larval competition/survival
+
+def make_buckley_table(): #loop for x amount of generations printing a row with numbers specified in make_biennial_row function
+    bk = Buckley()
+    print(["y","S","W"])
+    for y in range(12):
+        print make_buckley_row(bk, y)
+
+def make_buckley_row(bk, y):#print out biennial life table, will increase exponentially at this point
+    S = bk.seedbank(y)
+    W = bk.weevil(y)
+    return [y, int(round(S)), int(round(W))] #list will print as a row in make_biennial_table with gen, rosette number, and flower
+
+
+if __name__ == '__main__':
+    make_buckley_table()
