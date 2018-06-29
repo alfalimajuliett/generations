@@ -25,9 +25,9 @@ class NicholsonBailey(object):
 
 def make_table(): #loop for x amount of generations printing a row with numbers specified in make_row function
     model = NicholsonBailey()
-    print ['Y', 'hosts', 'parasitoid']
+    print(['Y', 'hosts', 'parasitoid'])
     for t in range(5):
-        print make_row(model, t)
+        print(make_row(model, t))
 
 def make_row(model, t):
     h = model.host_population_at_time(t)
