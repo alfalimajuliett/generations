@@ -31,7 +31,6 @@ class Biennial:
         #self.percent_increase_mortality = percent_increase_mortality or 30
         self.plant_dd_shape_par = plant_dd_shape_par or 0.1
 
-
     def seedbank(self, gen):
         """
         The seedback is based on the sum of the seeds staying and new seeds.
@@ -40,10 +39,10 @@ class Biennial:
             return self.initial_seedbank
         else:
             probability_seeds_leave = (1-self.probability_of_decay)*(1-self.probability_of_germination)
-            dens_dependent = (self.flower(gen-1)*self.probability_of_germination*self.seedling_survival_to_flowering*self.seed_incorporation_rate*self.maximum_plant_fecundity)/(1+self.plant_dd_shape_par*self.probability_of_germination*self.seedling_survival_to_flowering*self.flower(gen-1))
+            dens_dependent = self.maximum_plant_fecundity/(1+self.plant_dd_shape_par*self.probability_of_germination*self.seedling_survival_to_flowering*self.seedbank(gen -1))
             seeds_staying = self.seedbank(gen-1) #breaking seedbank into two variables, probability they stay and probability new seeds enter
             #new_seeds = self.flower(gen-1)*self.maximum_plant_fecundity*self.seed_incorporation_rate # * self.seed_recruitment_into_seedbank...look up seed_incorporation_rate
-            return probability_seeds_leave*seeds_staying*dens_dependent
+            return probability_seeds_leave*seeds_staying+self.flower(gen-1)*self.seed_incorporation_rate*dens_dependent
 
     def rosette(self, gen):
         """
@@ -78,7 +77,7 @@ class Biennial:
 def make_biennial_table(): #loop for x amount of generations printing a row with numbers specified in make_biennial_row function
     b = Biennial()
     print(["y","S","R","F","W"])
-    for y in range(20):
+    for y in range(14):
         print(make_biennial_row(b, y))
 
 def make_biennial_row(b, y):#print out biennial life table, will increase exponentially at this point
