@@ -38,11 +38,11 @@ class Biennial:
         if gen == 0:
             return self.initial_seedbank
         else:
-            probability_seeds_leave = (1-self.probability_of_decay)*(1-self.probability_of_germination)
+            probability_seeds_stay = (1-self.probability_of_decay)*(1-self.probability_of_germination)
             dens_dependent = self.maximum_plant_fecundity/(1+self.plant_dd_shape_par*self.probability_of_germination*self.seedling_survival_to_flowering*self.seedbank(gen -1))
-            seeds_staying = self.seedbank(gen-1) #breaking seedbank into two variables, probability they stay and probability new seeds enter
+            previous_seeds = self.seedbank(gen-1) #breaking seedbank into two variables, probability they stay and probability new seeds enter
             #new_seeds = self.flower(gen-1)*self.maximum_plant_fecundity*self.seed_incorporation_rate # * self.seed_recruitment_into_seedbank...look up seed_incorporation_rate
-            return probability_seeds_leave*seeds_staying+self.flower(gen-1)*self.seed_incorporation_rate*dens_dependent
+            return probability_seeds_stay*previous_seeds+self.flower(gen-1)*self.seed_incorporation_rate*dens_dependent
 
     def rosette(self, gen):
         """

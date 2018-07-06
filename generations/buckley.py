@@ -26,11 +26,11 @@ class Buckley(object):
         if gen == 0:
             return self.initial_seedbank
         else:
-            probability_seeds_leave = (1-self.probability_of_decay)*(1-self.probability_of_germination)
+            probability_seeds_stay = (1-self.probability_of_decay)*(1-self.probability_of_germination)
             dens_dependent = (self.seedbank(gen-1)*self.probability_of_germination*self.seedling_survival_to_flowering*self.seed_incorporation_rate*self.maximum_plant_fecundity)/(1+self.plant_dd_shape_par*self.probability_of_germination*self.seedling_survival_to_flowering*self.seedbank(gen-1))
             plant_biomass = self.fecundity_to_biomass*self.maximum_plant_fecundity/(1+self.plant_dd_shape_par*self.probability_of_germination*self.seedling_survival_to_flowering*self.seedbank(gen-1))
             attrition_by_weevil = (self.damage_function_shape*self.weevil_attack_rate*self.weevil(gen-1))/plant_biomass
-            return (probability_seeds_leave*self.seedbank(gen-1)+dens_dependent)*math.e**(-attrition_by_weevil)
+            return (probability_seeds_stay*self.seedbank(gen-1)+dens_dependent)*math.e**(-attrition_by_weevil)
     #multiply by seed incorporation, recruitment of seed into seedbank, seedling survival to flower and a constant?
     #probability that a seed in the seedbank remains in its current state
 
@@ -42,8 +42,8 @@ class Buckley(object):
         if gen == 0:
             return self.weevil_population
         else:
-            #weevil_survival= self.larval_survival/(1+(0.3*self.weevil_attack_rate*self.weevil_population(gen-1))/(self.fecundity_to_biomass*self.maximum_plant_fecundity))
-            return self.seedbank(gen-1)*self.probability_of_germination*self.seedling_survival_to_flowering*self.weevil(gen-1)*self.weevil_attack_rate*self.larval_survival
+            weevil_survival= self.larval_survival/(1+(0.3*self.weevil_attack_rate*self.weevil(gen-1)))/(self.fecundity_to_biomass*self.maximum_plant_fecundity)
+            return self.seedbank(gen-1)*self.probability_of_germination*self.seedling_survival_to_flowering*self.weevil(gen-1)*self.weevil_attack_rate*weevil_survival
 #get weevil attack rate from CABI reports and larval competition/survival
 
 def make_buckley_table(): #loop for x amount of generations printing a row with numbers specified in make_biennial_row function
