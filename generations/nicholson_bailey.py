@@ -1,6 +1,7 @@
 import math
+from base_model import BaseModel
 
-class NicholsonBailey(object):
+class NicholsonBailey(BaseModel):
     def __init__(self, initial_host_population=None, initial_parasitoid_population=None, reproductive_rate=None, search_efficiency=None, viable_eggs_per_parasitoid=None):
         self.initial_host_population = initial_host_population or 100
         self.initial_parasitoid_population = initial_parasitoid_population or 10

@@ -1,4 +1,5 @@
 import math
+from base_model import BaseModel
 
 #@memoization
 
@@ -7,7 +8,7 @@ import math
 #####################
 # Seedbank function #
 #####################
-class Buckley(object):
+class Buckley(BaseModel):
     def __init__(self, initial_seedbank=None, probability_of_decay=None, probability_of_germination=None, maximum_plant_fecundity=None, fecundity_to_biomass=None, seedling_survival_to_flowering=None, seed_incorporation_rate=None, damage_function_shape=None, weevil_population=None, weevil_attack_rate=None, larval_survival=None, plant_dd_shape_par=None):
         self.initial_seedbank = initial_seedbank or 5819
         self.weevil_population = weevil_population or 1

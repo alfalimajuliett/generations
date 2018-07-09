@@ -1,7 +1,8 @@
 import math
+from base_model import BaseModel
 
 # @memoization
-class Biennial:
+class Biennial(BaseModel):
     """
     The baseline model assumes no density dependence for the plant
     and no larval competition in the stem
