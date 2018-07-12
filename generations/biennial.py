@@ -12,6 +12,7 @@ class Biennial(BaseModel):
         """
         set of parameters based on A. petiolata and C. scrobicollis
         """
+        self.cache = {}
         self.initial_seedbank = initial_seedbank or 5189
         self.probability_of_decay = probability_of_decay or 0.35
         self.probability_of_germination = probability_of_germination or 0.13
@@ -36,6 +37,9 @@ class Biennial(BaseModel):
         """
         The seedback is based on the sum of the seeds staying and new seeds.
         """
+        if gen in self.cache:
+            return self.cache[gen]
+        
         if gen == 0:
             return self.initial_seedbank
         else:
@@ -43,7 +47,9 @@ class Biennial(BaseModel):
             dens_dependent = self.maximum_plant_fecundity/(1+self.plant_dd_shape_par*self.probability_of_germination*self.seedling_survival_to_flowering*self.seedbank(gen -1))
             previous_seeds = self.seedbank(gen-1) #breaking seedbank into two variables, probability they stay and probability new seeds enter
             #new_seeds = self.flower(gen-1)*self.maximum_plant_fecundity*self.seed_incorporation_rate # * self.seed_recruitment_into_seedbank...look up seed_incorporation_rate
-            return probability_seeds_stay*previous_seeds+self.flower(gen-1)*self.seed_incorporation_rate*dens_dependent
+            seedbank_at_time_gen = probability_seeds_stay*previous_seeds+self.flower(gen-1)*self.seed_incorporation_rate*dens_dependent
+            self.cache[gen] = seedbank_at_time_gen
+            return seedbank_at_time_gen
 
     def rosette(self, gen):
         """
