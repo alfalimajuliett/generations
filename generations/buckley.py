@@ -23,6 +23,7 @@ class Buckley(BaseModel):
         self.larval_survival = larval_survival or 0.5
         self.plant_dd_shape_par = plant_dd_shape_par or 0.1
 
+    @BaseModel.memoize
     def seedbank(self, gen):
         if gen == 0:
             return self.initial_seedbank
@@ -38,7 +39,7 @@ class Buckley(BaseModel):
 ###################
 # Weevil function #
 ###################
-
+    @BaseModel.memoize
     def weevil(self, gen):
         if gen == 0:
             return self.weevil_population
@@ -50,7 +51,7 @@ class Buckley(BaseModel):
 def make_buckley_table(): #loop for x amount of generations printing a row with numbers specified in make_biennial_row function
     bk = Buckley()
     print(["y","S","W"])
-    for y in range(12):
+    for y in range(100):
         print(make_buckley_row(bk, y))
 
 def make_buckley_row(bk, y):#print out biennial life table, will increase exponentially at this point
