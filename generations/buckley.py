@@ -1,6 +1,7 @@
 import math
 from base_model import BaseModel
-
+import StringIO
+import csv
 #@memoization
 
 #From Buckley et al. 2006: http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2664.2005.00991.x/epdf
@@ -29,10 +30,10 @@ class Buckley(BaseModel):
             return self.initial_seedbank
         else:
             probability_seeds_stay = (1-self.probability_of_decay)*(1-self.probability_of_germination)
-            dens_dependent = (self.seedbank(gen-1)*self.probability_of_germination*self.seedling_survival_to_flowering*self.seed_incorporation_rate*self.maximum_plant_fecundity)/(1+self.plant_dd_shape_par*self.probability_of_germination*self.seedling_survival_to_flowering*self.seedbank(gen-1))
+            dens_dependent = (self.seedbank(gen-1)*self.probability_of_germination*self.seedling_survival_to_flowering*self.seed_incorporation_rate*self.maximum_plant_fecundity)/(1+(self.plant_dd_shape_par*self.probability_of_germination*self.seedling_survival_to_flowering*self.seedbank(gen-1)))
             plant_biomass = self.fecundity_to_biomass*self.maximum_plant_fecundity/(1+self.plant_dd_shape_par*self.probability_of_germination*self.seedling_survival_to_flowering*self.seedbank(gen-1))
-            attrition_by_weevil = (self.damage_function_shape*self.weevil_attack_rate*self.weevil(gen-1))/plant_biomass
-            return (probability_seeds_stay*self.seedbank(gen-1)+dens_dependent)*math.e**(-attrition_by_weevil)
+            attrition_by_weevil = (-self.damage_function_shape*self.weevil_attack_rate*self.weevil(gen-1))/plant_biomass
+            return (probability_seeds_stay*self.seedbank(gen-1))+dens_dependent*math.e**(attrition_by_weevil)
     #multiply by seed incorporation, recruitment of seed into seedbank, seedling survival to flower and a constant?
     #probability that a seed in the seedbank remains in its current state
 
@@ -48,17 +49,28 @@ class Buckley(BaseModel):
             return self.seedbank(gen-1)*self.probability_of_germination*self.seedling_survival_to_flowering*self.weevil(gen-1)*self.weevil_attack_rate*weevil_survival
 #get weevil attack rate from CABI reports and larval competition/survival
 
+
+
 def make_buckley_table(): #loop for x amount of generations printing a row with numbers specified in make_biennial_row function
     bk = Buckley()
-    print(["y","S","W"])
-    for y in range(100):
-        print(make_buckley_row(bk, y))
+    with open('bk.csv','w') as f:
+        headers = ["y","S","W"]
+        print(headers)
+        thewriter = csv.writer(f)
+        thewriter.writerow(headers)
+        for y in range(100):
+            make_buckley_row(thewriter, bk, y)
 
-def make_buckley_row(bk, y):#print out biennial life table, will increase exponentially at this point
+def make_buckley_row(thewriter, bk, y):#print out biennial life table, will increase exponentially at this point
     S = bk.seedbank(y)
     W = bk.weevil(y)
-    return [y, int(round(S)), int(round(W))] #list will print as a row in make_biennial_table with gen, rosette number, and flower
+    row = [y, int(round(S)), int(round(W))] #list will print as a row in make_biennial_table with gen, rosette number, and flower
+    thewriter.writerow([str(x) for x in row])
+    print(row)
 
+
+ #Give your csv text here.
+## Python will convert \n to os.linesep
 
 if __name__ == '__main__':
     make_buckley_table()
