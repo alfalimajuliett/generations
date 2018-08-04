@@ -68,6 +68,7 @@ class Buckley(BaseModel):
     #multiply by seed incorporation, recruitment of seed into seedbank, seedling survival to flower and a constant?
     #probability that a seed in the seedbank remains in its current state
 
+
 ###################
 # Weevil function #
 ###################
@@ -89,14 +90,14 @@ class Buckley(BaseModel):
             ) * self.probability_of_germination * self.seedling_survival_to_flowering * self.weevil(
                 gen - 1) * attack_rate * weevil_survival
 
-
-#get weevil attack rate from CABI reports and larval competition/survival
-
     def make_row(self, gen):
         Seeds = self.seedbank(gen)
         Weevils = self.weevil(gen)
         row = [gen, int(round(Seeds)), int(round(Weevils))]
         return row
+
+    def make_headers(self):
+        return ["gen", "Seeds", "Weevils"]
 
 if __name__ == '__main__':
     Buckley.make_table(75, "bk.csv")

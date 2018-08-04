@@ -15,6 +15,7 @@ class NicholsonBailey(BaseModel):
         self.search_efficiency = search_efficiency or 0.05
         self.viable_eggs_per_parasitoid = viable_eggs_per_parasitoid or 1
 
+    @BaseModel.memoize
     def host_population_at_time(self, time):
         if time == 0:
             return self.initial_host_population
@@ -25,6 +26,7 @@ class NicholsonBailey(BaseModel):
                                self.parasitoid_population_at_time(time - 1))
             return r * h * exp_s_p
 
+    @BaseModel.memoize
     def parasitoid_population_at_time(self, time):
         if time == 0:
             return self.initial_parasitoid_population
@@ -34,21 +36,15 @@ class NicholsonBailey(BaseModel):
                              (-self.search_efficiency *
                               self.parasitoid_population_at_time(time - 1)))
 
+    def make_row(self, t):
+        hosts = self.host_population_at_time(t)
+        parasitoids = self.parasitoid_population_at_time(t)
+        row = [t, int(round(hosts)), int(round(parasitoids))]
+        return row
 
-def make_table(
-):  #loop for x amount of generations printing a row with numbers specified in make_row function
-    model = NicholsonBailey()
-    print(['Y', 'hosts', 'parasitoid'])
-    for t in range(5):
-        print(make_row(model, t))
-
-
-def make_row(model, t):
-    h = model.host_population_at_time(t)
-    p = model.parasitoid_population_at_time(t)
-    return [t, int(round(h)),
-            int(round(p))]  #list will print as a row in make_table
+    def make_headers(self):
+        return ["t", "hosts", "parasitoids"]
 
 
 if __name__ == '__main__':
-    make_table()
+    NicholsonBailey.make_table(75, "n-b.csv")

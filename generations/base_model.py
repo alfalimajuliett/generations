@@ -20,7 +20,7 @@ class BaseModel(object):
         #loop for x amount of generations printing a row with numbers specified in make_biennial_row function
         model = clazz()
         with open(csv_filename, 'w') as csv_file:
-            headers = ["y", "S", "W"]
+            headers = model.make_headers()
             print(headers)
             thewriter = csv.writer(csv_file)
             thewriter.writerow(headers)
@@ -32,4 +32,9 @@ class BaseModel(object):
     def make_row(self, gen):
         #implement this in inheriting classes
         #return a list of values at time gen
+        raise NotImplementedError
+
+    def make_headers(self):
+        #implement this in inheriting classes
+        #return a list of headers
         raise NotImplementedError

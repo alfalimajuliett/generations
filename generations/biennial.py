@@ -128,24 +128,22 @@ class Biennial(BaseModel):
                 gen - 1
             ) * attack_rate * weevil_survival  #*self.percent_increase_mortality)removed *self.probability_of_germination*self.seedling_survival_to_flowering
 
+    def make_row(self, gen):
+        Seeds = self.seedbank(gen)
+        Rosettes = self.rosette(gen)
+        Flowers = self.flower(gen)
+        Weevils = self.weevil(gen)
+        return [
+            gen,
+            int(round(Seeds)),
+            int(round(Rosettes)),
+            int(round(Flowers)),
+            int(round(Weevils))
+        ]
 
-def make_biennial_table(
-):  #loop for x amount of generations printing a row with numbers specified in make_biennial_row function
-    b = Biennial()
-    print(["y", "S", "R", "F", "W"])
-    for y in range(100):
-        print(make_biennial_row(b, y))
-
-
-def make_biennial_row(
-        b, y
-):  #print out biennial life table, will increase exponentially at this point
-    S = b.seedbank(y)
-    R = b.rosette(y)
-    F = b.flower(y)
-    W = b.weevil(y)
-    return [y, int(round(S)), int(round(R)), int(round(F)), int(round(W))]
+    def make_headers(self):
+        return ["gen", "Seeds", "Rosettes", "Flowers", "Weevils"]
 
 
 if __name__ == '__main__':
-    make_biennial_table()
+    Biennial.make_table(75, "bnl.csv")

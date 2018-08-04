@@ -17,6 +17,11 @@ if command -v pipenv >/dev/null 2>&1; then
     echo Running unit tests against multiple python versions and reporting coverage...
     pipenv run tox
 
+    echo Running programs as an integration test...
+    python -m generations.nicholson_bailey
+    python -m generations.buckley
+    python -m generations.biennial
+    
     echo Opening coverage report...
     open htmlcov/index.html # to browse coverage data in browser
 else
