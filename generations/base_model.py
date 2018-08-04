@@ -1,41 +1,31 @@
-import collections
 import csv
 
 
 class BaseModel(object):
-    @staticmethod
-    def memoize(function):
-        cache = collections.defaultdict(dict)
-
-        def memoized_function(self, gen):
-            if gen in cache[self]:
-                return cache[self][gen]
-            result = function(self, gen)
-            cache[self][gen] = result
-            return result
-
-        return memoized_function
-
-    @classmethod
-    def make_table(clazz, number_of_gens, csv_filename):
-        #loop for x amount of generations printing a row with numbers specified in make_biennial_row function
-        model = clazz()
+    def make_table(self, number_of_gens, csv_filename):
+        """
+        loop for x amount of generations printing a row with numbers specified in make_row function
+        """
         with open(csv_filename, 'w') as csv_file:
-            headers = model.make_headers()
+            headers = self.make_headers()
             print(headers)
-            thewriter = csv.writer(csv_file)
-            thewriter.writerow(headers)
+            csv_writer = csv.writer(csv_file)
+            csv_writer.writerow(headers)
             for gen in range(number_of_gens):
-                row = model.make_row(gen)
+                row = self.make_row(gen)
                 print(row)
-                thewriter.writerow([str(x) for x in row])
+                csv_writer.writerow([str(x) for x in row])
 
     def make_row(self, gen):
-        #implement this in inheriting classes
-        #return a list of values at time gen
+        """
+        implement this in inheriting classes
+        return a list of values at time gen
+        """
         raise NotImplementedError
 
     def make_headers(self):
-        #implement this in inheriting classes
-        #return a list of headers
+        """
+        implement this in inheriting classes
+        return a list of headers
+        """
         raise NotImplementedError

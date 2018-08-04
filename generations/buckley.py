@@ -1,16 +1,14 @@
 import math
+
 from .base_model import BaseModel
-import csv
-
-#@memoization
-
-#From Buckley et al. 2006: http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2664.2005.00991.x/epdf
+from .memoization import memoize_method
 
 
-#####################
-# Seedbank function #
-#####################
 class Buckley(BaseModel):
+    """
+    From Buckley et al. 2006: http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2664.2005.00991.x/epdf
+    """
+
     def __init__(self,
                  initial_seedbank=None,
                  probability_of_decay=None,
@@ -41,7 +39,7 @@ class Buckley(BaseModel):
         self.plant_dd_shape_par = plant_dd_shape_par or 0.1
         self.avg_eggs_per_plant = avg_eggs_per_plant or 35
 
-    @BaseModel.memoize
+    @memoize_method
     def seedbank(self, gen):
         if gen == 0:
             return self.initial_seedbank
@@ -65,15 +63,7 @@ class Buckley(BaseModel):
             return (probability_seeds_stay * self.seedbank(gen - 1)
                     ) + dens_dependent * math.e**(attrition_by_weevil)
 
-    #multiply by seed incorporation, recruitment of seed into seedbank, seedling survival to flower and a constant?
-    #probability that a seed in the seedbank remains in its current state
-
-
-###################
-# Weevil function #
-###################
-
-    @BaseModel.memoize
+    @memoize_method
     def weevil(self, gen):
         if gen == 0:
             return self.weevil_population
@@ -99,5 +89,6 @@ class Buckley(BaseModel):
     def make_headers(self):
         return ["gen", "Seeds", "Weevils"]
 
+
 if __name__ == '__main__':
-    Buckley.make_table(75, "bk.csv")
+    Buckley().make_table(75, "bk.csv")

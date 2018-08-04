@@ -1,6 +1,6 @@
-from generations.biennial import Biennial
-
 import unittest
+
+from generations.biennial import Biennial
 
 
 class TestBiennial(unittest.TestCase):
@@ -26,6 +26,18 @@ class TestBiennial(unittest.TestCase):
         b = Biennial()
         b.seedbank(20)
 
+    def test_make_headers(self):
+        b = Biennial()
+        self.assertEqual(["gen", "Seeds", "Rosettes", "Flowers", "Weevils"],
+                         b.make_headers())
 
-if __name__ == '__main__':
-    unittest.main()
+    def test_make_row_at_time_zero(self):
+        b = Biennial()
+        self.assertEqual([
+            0, b.initial_seedbank, b.initial_rosette_population,
+            b.initial_flower_population, b.weevil_population
+        ], b.make_row(0))
+
+    def test_make_row_at_time_ten(self):
+        b = Biennial()
+        self.assertEqual([10, 1517, 106, 44, 422], b.make_row(10))

@@ -1,5 +1,7 @@
 import math
+
 from .base_model import BaseModel
+from .memoization import memoize_method
 
 
 class NicholsonBailey(BaseModel):
@@ -15,7 +17,7 @@ class NicholsonBailey(BaseModel):
         self.search_efficiency = search_efficiency or 0.05
         self.viable_eggs_per_parasitoid = viable_eggs_per_parasitoid or 1
 
-    @BaseModel.memoize
+    @memoize_method
     def host_population_at_time(self, time):
         if time == 0:
             return self.initial_host_population
@@ -26,7 +28,7 @@ class NicholsonBailey(BaseModel):
                                self.parasitoid_population_at_time(time - 1))
             return r * h * exp_s_p
 
-    @BaseModel.memoize
+    @memoize_method
     def parasitoid_population_at_time(self, time):
         if time == 0:
             return self.initial_parasitoid_population
@@ -47,4 +49,4 @@ class NicholsonBailey(BaseModel):
 
 
 if __name__ == '__main__':
-    NicholsonBailey.make_table(75, "n-b.csv")
+    NicholsonBailey().make_table(75, "n-b.csv")
