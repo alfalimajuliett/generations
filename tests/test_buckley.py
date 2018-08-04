@@ -1,6 +1,6 @@
-from generations.buckley import Buckley
-
 import unittest
+
+from generations.buckley import Buckley
 
 
 class TestBuckley(unittest.TestCase):
@@ -21,7 +21,3 @@ class TestBuckley(unittest.TestCase):
         self.assertEqual(5819, b.seedbank(0))
         self.assertEqual(6443.534736484327, b.seedbank(1))
         self.assertEqual(4767.113852088716, b.seedbank(2))
-
-
-if __name__ == '__main__':
-    unittest.main()

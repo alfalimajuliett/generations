@@ -1,6 +1,6 @@
-from generations.biennial import Biennial
-
 import unittest
+
+from generations.biennial import Biennial
 
 
 class TestBiennial(unittest.TestCase):
@@ -25,7 +25,3 @@ class TestBiennial(unittest.TestCase):
     def test_is_slow_without_memoization(self):
         b = Biennial()
         b.seedbank(20)
-
-
-if __name__ == '__main__':
-    unittest.main()
