@@ -1,8 +1,9 @@
 import math
+
 from .base_model import BaseModel
+from .memoization import memoize_method
 
 
-# @memoization
 class Biennial(BaseModel):
     """
     The baseline model assumes no density dependence for the plant
@@ -54,7 +55,7 @@ class Biennial(BaseModel):
         self.plant_dd_shape_par = plant_dd_shape_par or 0.1
         self.avg_eggs_per_plant = avg_eggs_per_plant or 35
 
-    @BaseModel.memoize
+    @memoize_method
     def seedbank(self, gen):
         """
         The seedback is based on the sum of the seeds staying and new seeds.
@@ -71,7 +72,7 @@ class Biennial(BaseModel):
             return probability_seeds_stay * previous_seeds + self.flower(
                 gen - 1) * self.seed_incorporation_rate * dens_dependent
 
-    @BaseModel.memoize
+    @memoize_method
     def rosette(self, gen):
         """
         rossetes are based on seeds that germinated in the current time step and survived to rosette
@@ -83,7 +84,7 @@ class Biennial(BaseModel):
                 gen
             ) * self.probability_of_germination * self.seedling_survival_to_rosette
 
-    @BaseModel.memoize
+    @memoize_method
     def flower(self, gen):
         """
         flower is based on proportion of rosettes that survived with the rate of attrition by weevil population
@@ -101,7 +102,7 @@ class Biennial(BaseModel):
             return self.rosette(gen - 1) * self.rosette_survival * math.e**(
                 -attrition_by_weevil)
 
-    @BaseModel.memoize
+    @memoize_method
     def weevil(self, gen):
         """
         This weevil feeds on rosettes. Its population is based on rosettes of previous year

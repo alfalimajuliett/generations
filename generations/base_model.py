@@ -1,21 +1,7 @@
-import collections
 import csv
 
 
 class BaseModel(object):
-    @staticmethod
-    def memoize(function):
-        cache = collections.defaultdict(dict)
-
-        def memoized_function(self, gen):
-            if gen in cache[self]:
-                return cache[self][gen]
-            result = function(self, gen)
-            cache[self][gen] = result
-            return result
-
-        return memoized_function
-
     @classmethod
     def make_table(clazz, number_of_gens, csv_filename):
         """

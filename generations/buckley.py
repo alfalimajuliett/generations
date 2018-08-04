@@ -1,6 +1,7 @@
 import math
+
 from .base_model import BaseModel
-import csv
+from .memoization import memoize_method
 
 
 class Buckley(BaseModel):
@@ -38,7 +39,7 @@ class Buckley(BaseModel):
         self.plant_dd_shape_par = plant_dd_shape_par or 0.1
         self.avg_eggs_per_plant = avg_eggs_per_plant or 35
 
-    @BaseModel.memoize
+    @memoize_method
     def seedbank(self, gen):
         if gen == 0:
             return self.initial_seedbank
@@ -62,7 +63,7 @@ class Buckley(BaseModel):
             return (probability_seeds_stay * self.seedbank(gen - 1)
                     ) + dens_dependent * math.e**(attrition_by_weevil)
 
-    @BaseModel.memoize
+    @memoize_method
     def weevil(self, gen):
         if gen == 0:
             return self.weevil_population
