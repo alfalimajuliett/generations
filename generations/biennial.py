@@ -144,20 +144,7 @@ def make_biennial_row(
     R = b.rosette(y)
     F = b.flower(y)
     W = b.weevil(y)
-
-    #if y > 0:
-    #debugging = [b.rosette(y-1)*b.rosette_survival,
-    #math.e**(-b.damage_function_shape*b.weevil_attack_rate*b.weevil(y-1)/b.conversion_coefficient*b.maximum_plant_fecundity),
-    #-b.damage_function_shape*b.weevil_attack_rate*b.weevil(y-1),
-    #b.conversion_coefficient*b.maximum_plant_fecundity]
-    #else:
-    #debugging = []
-    return [
-        y, int(round(S)),
-        int(round(R)),
-        int(round(F)),
-        int(round(W))
-    ]  #+ debugging #list will print as a row in make_biennial_table with gen, rosette number, and flower
+    return [y, int(round(S)), int(round(R)), int(round(F)), int(round(W))]
 
 
 if __name__ == '__main__':

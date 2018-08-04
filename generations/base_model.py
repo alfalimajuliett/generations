@@ -1,3 +1,6 @@
+import csv
+
+
 class BaseModel(object):
     @staticmethod
     def memoize(function):
@@ -11,3 +14,22 @@ class BaseModel(object):
             return result
 
         return memoized_function
+
+    @classmethod
+    def make_table(clazz, number_of_gens, csv_filename):
+        #loop for x amount of generations printing a row with numbers specified in make_biennial_row function
+        model = clazz()
+        with open(csv_filename, 'w') as csv_file:
+            headers = ["y", "S", "W"]
+            print(headers)
+            thewriter = csv.writer(csv_file)
+            thewriter.writerow(headers)
+            for gen in range(number_of_gens):
+                row = model.make_row(gen)
+                print(row)
+                thewriter.writerow([str(x) for x in row])
+
+    def make_row(self, gen):
+        #implement this in inheriting classes
+        #return a list of values at time gen
+        raise NotImplementedError

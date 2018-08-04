@@ -92,34 +92,11 @@ class Buckley(BaseModel):
 
 #get weevil attack rate from CABI reports and larval competition/survival
 
-
-def make_buckley_table(
-):  #loop for x amount of generations printing a row with numbers specified in make_biennial_row function
-    bk = Buckley()
-    with open('bk.csv', 'w') as f:
-        headers = ["y", "S", "W"]
-        print(headers)
-        thewriter = csv.writer(f)
-        thewriter.writerow(headers)
-        for y in range(75):
-            make_buckley_row(thewriter, bk, y)
-
-
-def make_buckley_row(
-        thewriter, bk, y
-):  #print out biennial life table, will increase exponentially at this point
-    S = bk.seedbank(y)
-    W = bk.weevil(y)
-    row = [
-        y, int(round(S)), int(round(W))
-    ]  #list will print as a row in make_biennial_table with gen, rosette number, and flower
-    thewriter.writerow([str(x) for x in row])
-    print(row)
-
-
-#Give your csv text here.
-
-## Python will convert \n to os.linesep
+    def make_row(self, gen):
+        Seeds = self.seedbank(gen)
+        Weevils = self.weevil(gen)
+        row = [gen, int(round(Seeds)), int(round(Weevils))]
+        return row
 
 if __name__ == '__main__':
-    make_buckley_table()
+    Buckley.make_table(75, "bk.csv")
