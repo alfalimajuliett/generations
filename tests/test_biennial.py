@@ -2,6 +2,7 @@ from generations.biennial import Biennial
 
 import unittest
 
+
 class TestBiennial(unittest.TestCase):
     def test_has_defaults(self):
         b = Biennial()
@@ -24,6 +25,7 @@ class TestBiennial(unittest.TestCase):
     def test_is_slow_without_memoization(self):
         b = Biennial()
         b.seedbank(20)
+
 
 if __name__ == '__main__':
     unittest.main()

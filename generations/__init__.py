@@ -1,2 +1,2 @@
-import buckley
-import nicholson_bailey
+from . import buckley
+from . import nicholson_bailey
