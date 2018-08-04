@@ -2,6 +2,7 @@ from generations.buckley import Buckley
 
 import unittest
 
+
 class TestBuckley(unittest.TestCase):
     def test_has_defaults(self):
         b = Buckley()
@@ -18,8 +19,9 @@ class TestBuckley(unittest.TestCase):
     def test_seedbank(self):
         b = Buckley()
         self.assertEqual(5819, b.seedbank(0))
-        self.assertEqual(6169.744563890069, b.seedbank(1))
-        self.assertEqual(6412.9336738432, b.seedbank(2))
+        self.assertEqual(6443.534736484327, b.seedbank(1))
+        self.assertEqual(4767.113852088716, b.seedbank(2))
+
 
 if __name__ == '__main__':
     unittest.main()

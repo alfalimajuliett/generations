@@ -2,6 +2,7 @@ from generations.nicholson_bailey import NicholsonBailey
 
 import unittest
 
+
 class TestNicholsonBailey(unittest.TestCase):
     def test_has_defaults(self):
         nb = NicholsonBailey()
@@ -26,6 +27,7 @@ class TestNicholsonBailey(unittest.TestCase):
     def test_host_population_at_time_two(self):
         nb = NicholsonBailey(600)
         self.assertEqual(0.043518818242168626, nb.host_population_at_time(2))
+
 
 if __name__ == '__main__':
     unittest.main()
