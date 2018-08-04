@@ -49,4 +49,4 @@ class NicholsonBailey(BaseModel):
 
 
 if __name__ == '__main__':
-    NicholsonBailey.make_table(75, "n-b.csv")
+    NicholsonBailey().make_table(75, "n-b.csv")

@@ -139,4 +139,4 @@ class Biennial(BaseModel):
 
 
 if __name__ == '__main__':
-    Biennial.make_table(75, "bnl.csv")
+    Biennial().make_table(75, "bnl.csv")

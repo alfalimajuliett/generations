@@ -91,4 +91,4 @@ class Buckley(BaseModel):
 
 
 if __name__ == '__main__':
-    Buckley.make_table(75, "bk.csv")
+    Buckley().make_table(75, "bk.csv")

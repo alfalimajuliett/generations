@@ -2,19 +2,17 @@ import csv
 
 
 class BaseModel(object):
-    @classmethod
-    def make_table(clazz, number_of_gens, csv_filename):
+    def make_table(self, number_of_gens, csv_filename):
         """
         loop for x amount of generations printing a row with numbers specified in make_row function
         """
-        model = clazz()
         with open(csv_filename, 'w') as csv_file:
-            headers = model.make_headers()
+            headers = self.make_headers()
             print(headers)
             csv_writer = csv.writer(csv_file)
             csv_writer.writerow(headers)
             for gen in range(number_of_gens):
-                row = model.make_row(gen)
+                row = self.make_row(gen)
                 print(row)
                 csv_writer.writerow([str(x) for x in row])
 
