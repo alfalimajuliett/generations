@@ -7,7 +7,6 @@ class Biennial(BaseModel):
     """
     The baseline model assumes no density dependence for the plant
     and no larval competition in the stem
-
     """
 
     def __init__(self,
@@ -51,9 +50,7 @@ class Biennial(BaseModel):
         self.seedling_survival_to_rosette = seedling_survival_to_rosette or .54
         self.initial_rosette_population = initial_rosette_population or 100
         self.rosette_survival = rosette_survival or .62
-        #self.average_seed_per_plant = average_seed_per_plant or 200
         self.conversion_coefficient = conversion_coefficient or 0.025  #conversion of plant matter to weevil's biomass? Need to run ECI for C. scrobicollis
-        #self.percent_increase_mortality = percent_increase_mortality or 30
         self.plant_dd_shape_par = plant_dd_shape_par or 0.1
         self.avg_eggs_per_plant = avg_eggs_per_plant or 35
 
@@ -70,10 +67,7 @@ class Biennial(BaseModel):
             dens_dependent = self.maximum_plant_fecundity / (
                 1 + self.plant_dd_shape_par * self.probability_of_germination *
                 self.seedling_survival_to_flowering * self.seedbank(gen - 1))
-            previous_seeds = self.seedbank(
-                gen - 1
-            )  #breaking seedbank into two variables, probability they stay and probability new seeds enter
-            #new_seeds = self.flower(gen-1)*self.maximum_plant_fecundity*self.seed_incorporation_rate # * self.seed_recruitment_into_seedbank...look up seed_incorporation_rate
+            previous_seeds = self.seedbank(gen - 1)
             return probability_seeds_stay * previous_seeds + self.flower(
                 gen - 1) * self.seed_incorporation_rate * dens_dependent
 
@@ -87,7 +81,7 @@ class Biennial(BaseModel):
         else:
             return self.seedbank(
                 gen
-            ) * self.probability_of_germination * self.seedling_survival_to_rosette  #((1-self.probability_of_decay)*self.seedbank(gen-1)*self.flower(gen-1)*self.maximum_plant_fecundity*self.seed_incorporation_rate)
+            ) * self.probability_of_germination * self.seedling_survival_to_rosette
 
     @BaseModel.memoize
     def flower(self, gen):
@@ -105,8 +99,7 @@ class Biennial(BaseModel):
                 self.damage_function_shape * self.weevil_attack_rate *
                 self.weevil(gen - 1)) / plant_biomass
             return self.rosette(gen - 1) * self.rosette_survival * math.e**(
-                -attrition_by_weevil
-            )  #multiply by rate of attrition of weevil from Buckley
+                -attrition_by_weevil)
 
     @BaseModel.memoize
     def weevil(self, gen):
@@ -125,8 +118,7 @@ class Biennial(BaseModel):
                 -self.weevil_scramble_competition * attack_rate *
                 self.weevil(gen - 1)) / (plant_biomass)
             return self.rosette(gen - 1) * self.weevil(
-                gen - 1
-            ) * attack_rate * weevil_survival  #*self.percent_increase_mortality)removed *self.probability_of_germination*self.seedling_survival_to_flowering
+                gen - 1) * attack_rate * weevil_survival
 
     def make_row(self, gen):
         Seeds = self.seedbank(gen)
