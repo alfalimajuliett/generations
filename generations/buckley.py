@@ -10,19 +10,21 @@ import csv
 # Seedbank function #
 #####################
 class Buckley(BaseModel):
-    def __init__(self, initial_seedbank=None, probability_of_decay=None, probability_of_germination=None, maximum_plant_fecundity=None, fecundity_to_biomass=None, seedling_survival_to_flowering=None, seed_incorporation_rate=None, damage_function_shape=None, weevil_population=None, weevil_attack_rate=None, larval_survival=None, plant_dd_shape_par=None):
+    def __init__(self, initial_seedbank=None, probability_of_decay=None, probability_of_germination=None, maximum_plant_fecundity=None, fecundity_to_biomass=None, seedling_survival_to_flowering=None, seed_incorporation_rate=None, damage_function_shape=None, weevil_population=None, weevil_attack_rate=None, larval_survival=None, plant_dd_shape_par=None, avg_eggs_per_plant=None, weevil_scramble_competition=None):
         self.initial_seedbank = initial_seedbank or 5819
         self.weevil_population = weevil_population or 1
         self.probability_of_decay = probability_of_decay or 0.15
         self.probability_of_germination = probability_of_germination or 0.13
-        self.maximum_plant_fecundity = maximum_plant_fecundity or 660
+        self.maximum_plant_fecundity = maximum_plant_fecundity or 560
         self.fecundity_to_biomass = fecundity_to_biomass or .025 # default for now. Equal to f(gsS(t-1) when there is no density dependence)
         self.seedling_survival_to_flowering = seedling_survival_to_flowering or 0.3
-        self.seed_incorporation_rate = seed_incorporation_rate or 0.3
+        self.seed_incorporation_rate = seed_incorporation_rate or 0.4
         self.damage_function_shape = damage_function_shape or .014
-        self.weevil_attack_rate = weevil_attack_rate or .24 #.01 to 0.5, greatly varies
-        self.larval_survival = larval_survival or 0.5
+        self.weevil_attack_rate = weevil_attack_rate or .1 #.01 to 0.5, greatly varies
+        self.larval_survival = larval_survival or 0.3
+        self.weevil_scramble_competition = weevil_scramble_competition or 0.012
         self.plant_dd_shape_par = plant_dd_shape_par or 0.1
+        self.avg_eggs_per_plant = avg_eggs_per_plant or 35
 
     @BaseModel.memoize
     def seedbank(self, gen):
@@ -32,6 +34,7 @@ class Buckley(BaseModel):
             probability_seeds_stay = (1-self.probability_of_decay)*(1-self.probability_of_germination)
             dens_dependent = (self.seedbank(gen-1)*self.probability_of_germination*self.seedling_survival_to_flowering*self.seed_incorporation_rate*self.maximum_plant_fecundity)/(1+(self.plant_dd_shape_par*self.probability_of_germination*self.seedling_survival_to_flowering*self.seedbank(gen-1)))
             plant_biomass = self.fecundity_to_biomass*self.maximum_plant_fecundity/(1+self.plant_dd_shape_par*self.probability_of_germination*self.seedling_survival_to_flowering*self.seedbank(gen-1))
+            attack_rate = self.avg_eggs_per_plant/self.weevil(gen-1)
             attrition_by_weevil = (-self.damage_function_shape*self.weevil_attack_rate*self.weevil(gen-1))/plant_biomass
             return (probability_seeds_stay*self.seedbank(gen-1))+dens_dependent*math.e**(attrition_by_weevil)
     #multiply by seed incorporation, recruitment of seed into seedbank, seedling survival to flower and a constant?
@@ -45,8 +48,10 @@ class Buckley(BaseModel):
         if gen == 0:
             return self.weevil_population
         else:
-            weevil_survival= self.larval_survival/(1+(0.3*self.weevil_attack_rate*self.weevil(gen-1)))/(self.fecundity_to_biomass*self.maximum_plant_fecundity)
-            return self.seedbank(gen-1)*self.probability_of_germination*self.seedling_survival_to_flowering*self.weevil(gen-1)*self.weevil_attack_rate*weevil_survival
+            plant_biomass = self.fecundity_to_biomass*self.maximum_plant_fecundity/(1+self.plant_dd_shape_par*self.probability_of_germination*self.seedling_survival_to_flowering*self.seedbank(gen-1))
+            attack_rate = self.avg_eggs_per_plant/self.weevil(gen-1)
+            weevil_survival= self.larval_survival*math.e**(-self.weevil_scramble_competition*attack_rate*self.weevil(gen-1))/(plant_biomass)
+            return self.seedbank(gen-1)*self.probability_of_germination*self.seedling_survival_to_flowering*self.weevil(gen-1)*attack_rate*weevil_survival
 #get weevil attack rate from CABI reports and larval competition/survival
 
 
@@ -58,7 +63,7 @@ def make_buckley_table(): #loop for x amount of generations printing a row with 
         print(headers)
         thewriter = csv.writer(f)
         thewriter.writerow(headers)
-        for y in range(100):
+        for y in range(75):
             make_buckley_row(thewriter, bk, y)
 
 def make_buckley_row(thewriter, bk, y):#print out biennial life table, will increase exponentially at this point
