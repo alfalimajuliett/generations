@@ -47,3 +47,4 @@ Commit the version, create a tag, and push tags:
     git commit -am "$version"
     git tag $version
     git push --tags
+    git push
