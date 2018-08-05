@@ -1,11 +1,11 @@
 import csv
 import os.path
 try:
-    from configparser import SafeConfigParser
-    config = SafeConfigParser()
+    import configparser
 except ImportError:
-    from ConfigParser import ConfigParser
-    config = ConfigParser()
+    import ConfigParser as configparser  # type: ignore
+
+config = configparser.ConfigParser()
 config_filename = (os.path.join(
     os.path.dirname(__file__), "default_parameters.cfg"))
 config.read(config_filename)

@@ -12,7 +12,7 @@ if command -v pipenv >/dev/null 2>&1; then
     pipenv run yapf -i $(git ls-files | grep .py$)
 
     echo Checking types...
-    pipenv run mypy generations tests --ignore-missing-imports
+    pipenv run mypy generations tests
 
     echo Running unit tests against multiple python versions and reporting coverage...
     pipenv run tox
