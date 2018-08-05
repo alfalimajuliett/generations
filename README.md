@@ -28,6 +28,8 @@ This will run the unit tests. If you have [pipenv](https://docs.pipenv.org/), it
 
 Install [pipenv](https://docs.pipenv.org/#install-pipenv-today) if you don't have it.
 
+Increment the version in `setup.py`.
+
 Run the tests one last time:
 
     ./test.sh
@@ -39,3 +41,9 @@ Build the distribution files:
 Upload using [`twine`](https://github.com/pypa/twine). It will prompt for your PyPI password:
 
     pipenv run twine upload dist/*
+
+Commit the version, create a tag, and push tags:
+
+    git commit -am "$version"
+    git tag $version
+    git push --tags
