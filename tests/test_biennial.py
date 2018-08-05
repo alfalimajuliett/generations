@@ -8,14 +8,6 @@ class TestBiennial(unittest.TestCase):
         b = Biennial()
         self.assertEqual(5189, b.initial_seedbank)
 
-    def test_takes_kwarg(self):
-        b = Biennial(initial_seedbank=200)
-        self.assertEqual(200, b.initial_seedbank)
-
-    def test_takes_arguments(self):
-        b = Biennial(100)
-        self.assertEqual(100, b.initial_seedbank)
-
     def test_seedbank(self):
         b = Biennial()
         self.assertEqual(5189, b.seedbank(0))

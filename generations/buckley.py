@@ -9,35 +9,24 @@ class Buckley(BaseModel):
     From Buckley et al. 2006: http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2664.2005.00991.x/epdf
     """
 
-    def __init__(self,
-                 initial_seedbank=None,
-                 probability_of_decay=None,
-                 probability_of_germination=None,
-                 maximum_plant_fecundity=None,
-                 fecundity_to_biomass=None,
-                 seedling_survival_to_flowering=None,
-                 seed_incorporation_rate=None,
-                 damage_function_shape=None,
-                 weevil_population=None,
-                 weevil_attack_rate=None,
-                 larval_survival=None,
-                 plant_dd_shape_par=None,
-                 avg_eggs_per_plant=None,
-                 weevil_scramble_competition=None):
-        self.initial_seedbank = initial_seedbank or 5819
-        self.weevil_population = weevil_population or 1
-        self.probability_of_decay = probability_of_decay or 0.15
-        self.probability_of_germination = probability_of_germination or 0.13
-        self.maximum_plant_fecundity = maximum_plant_fecundity or 560
-        self.fecundity_to_biomass = fecundity_to_biomass or .025  # default for now. Equal to f(gsS(t-1) when there is no density dependence)
-        self.seedling_survival_to_flowering = seedling_survival_to_flowering or 0.3
-        self.seed_incorporation_rate = seed_incorporation_rate or 0.4
-        self.damage_function_shape = damage_function_shape or .014
-        self.weevil_attack_rate = weevil_attack_rate or .1  #.01 to 0.5, greatly varies
-        self.larval_survival = larval_survival or 0.3
-        self.weevil_scramble_competition = weevil_scramble_competition or 0.012
-        self.plant_dd_shape_par = plant_dd_shape_par or 0.1
-        self.avg_eggs_per_plant = avg_eggs_per_plant or 35
+    def __init__(self):
+        self.initial_seedbank = self.getint("initial_seedbank")
+        self.weevil_population = self.getint("weevil_population")
+        self.probability_of_decay = self.getfloat("probability_of_decay")
+        self.probability_of_germination = self.getfloat(
+            "probability_of_germination")
+        self.maximum_plant_fecundity = self.getfloat("maximum_plant_fecundity")
+        self.fecundity_to_biomass = self.getfloat("fecundity_to_biomass")
+        self.seedling_survival_to_flowering = self.getfloat(
+            "seedling_survival_to_flowering")
+        self.seed_incorporation_rate = self.getfloat("seed_incorporation_rate")
+        self.damage_function_shape = self.getfloat("damage_function_shape")
+        self.weevil_attack_rate = self.getfloat("weevil_attack_rate")
+        self.larval_survival = self.getfloat("larval_survival")
+        self.weevil_scramble_competition = self.getfloat(
+            "weevil_scramble_competition")
+        self.plant_dd_shape_par = self.getfloat("plant_dd_shape_par")
+        self.avg_eggs_per_plant = self.getfloat("avg_eggs_per_plant")
 
     @memoize_method
     def seedbank(self, gen):

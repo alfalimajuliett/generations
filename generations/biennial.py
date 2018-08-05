@@ -10,50 +10,35 @@ class Biennial(BaseModel):
     and no larval competition in the stem
     """
 
-    def __init__(self,
-                 initial_seedbank=None,
-                 probability_of_decay=None,
-                 probability_of_germination=None,
-                 maximum_plant_fecundity=None,
-                 fecundity_to_biomass=None,
-                 seedling_survival_to_flowering=None,
-                 seed_incorporation_rate=None,
-                 damage_function_shape=None,
-                 weevil_population=None,
-                 weevil_attack_rate=None,
-                 larval_survival=None,
-                 initial_flower_population=None,
-                 seedling_survival_to_rosette=None,
-                 initial_rosette_population=None,
-                 rosette_survival=None,
-                 average_seed_per_plant=None,
-                 conversion_coefficient=None,
-                 percent_increase_mortality=None,
-                 plant_dd_shape_par=None,
-                 weevil_scramble_competition=None,
-                 avg_eggs_per_plant=None):
+    def __init__(self):
         """
         set of parameters based on A. petiolata and C. scrobicollis
         """
-        self.initial_seedbank = initial_seedbank or 5189
-        self.probability_of_decay = probability_of_decay or 0.35
-        self.probability_of_germination = probability_of_germination or 0.13
-        self.maximum_plant_fecundity = maximum_plant_fecundity or 660
-        self.fecundity_to_biomass = fecundity_to_biomass or .025  # default for now. Equal to f(gsS(t-1) when there is no density dependence)
-        self.seedling_survival_to_flowering = seedling_survival_to_flowering or 0.62
-        self.seed_incorporation_rate = seed_incorporation_rate or 0.3
-        self.damage_function_shape = damage_function_shape or .014
-        self.weevil_population = weevil_population or 1
-        self.weevil_attack_rate = weevil_attack_rate or 0.1  # percent reduction in seed
-        self.larval_survival = larval_survival or 0.2  #made this up
-        self.weevil_scramble_competition = weevil_scramble_competition or 0.012
-        self.initial_flower_population = initial_flower_population or 40
-        self.seedling_survival_to_rosette = seedling_survival_to_rosette or .54
-        self.initial_rosette_population = initial_rosette_population or 100
-        self.rosette_survival = rosette_survival or .62
-        self.conversion_coefficient = conversion_coefficient or 0.025  #conversion of plant matter to weevil's biomass? Need to run ECI for C. scrobicollis
-        self.plant_dd_shape_par = plant_dd_shape_par or 0.1
-        self.avg_eggs_per_plant = avg_eggs_per_plant or 35
+        self.initial_seedbank = self.getint("initial_seedbank")
+        self.probability_of_decay = self.getfloat("probability_of_decay")
+        self.probability_of_germination = self.getfloat(
+            "probability_of_germination")
+        self.maximum_plant_fecundity = self.getfloat("maximum_plant_fecundity")
+        self.fecundity_to_biomass = self.getfloat("fecundity_to_biomass")
+        self.seedling_survival_to_flowering = self.getfloat(
+            "seedling_survival_to_flowering")
+        self.seed_incorporation_rate = self.getfloat("seed_incorporation_rate")
+        self.damage_function_shape = self.getfloat("damage_function_shape")
+        self.weevil_population = self.getint("weevil_population")
+        self.weevil_attack_rate = self.getfloat("weevil_attack_rate")
+        self.larval_survival = self.getfloat("larval_survival")
+        self.weevil_scramble_competition = self.getfloat(
+            "weevil_scramble_competition")
+        self.initial_flower_population = self.getint(
+            "initial_flower_population")
+        self.seedling_survival_to_rosette = self.getfloat(
+            "seedling_survival_to_rosette")
+        self.initial_rosette_population = self.getint(
+            "initial_rosette_population")
+        self.rosette_survival = self.getfloat("rosette_survival")
+        self.conversion_coefficient = self.getfloat("conversion_coefficient")
+        self.plant_dd_shape_par = self.getfloat("plant_dd_shape_par")
+        self.avg_eggs_per_plant = self.getfloat("avg_eggs_per_plant")
 
     @memoize_method
     def seedbank(self, gen):
