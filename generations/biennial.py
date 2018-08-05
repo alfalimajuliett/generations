@@ -5,41 +5,6 @@ from .memoization import memoize_method
 
 
 class Biennial(BaseModel):
-    """
-    The baseline model assumes no density dependence for the plant
-    and no larval competition in the stem
-    """
-
-    def __init__(self):
-        """
-        set of parameters based on A. petiolata and C. scrobicollis
-        """
-        self.initial_seedbank = self.getint("initial_seedbank")
-        self.probability_of_decay = self.getfloat("probability_of_decay")
-        self.probability_of_germination = self.getfloat(
-            "probability_of_germination")
-        self.maximum_plant_fecundity = self.getfloat("maximum_plant_fecundity")
-        self.fecundity_to_biomass = self.getfloat("fecundity_to_biomass")
-        self.seedling_survival_to_flowering = self.getfloat(
-            "seedling_survival_to_flowering")
-        self.seed_incorporation_rate = self.getfloat("seed_incorporation_rate")
-        self.damage_function_shape = self.getfloat("damage_function_shape")
-        self.weevil_population = self.getint("weevil_population")
-        self.weevil_attack_rate = self.getfloat("weevil_attack_rate")
-        self.larval_survival = self.getfloat("larval_survival")
-        self.weevil_scramble_competition = self.getfloat(
-            "weevil_scramble_competition")
-        self.initial_flower_population = self.getint(
-            "initial_flower_population")
-        self.seedling_survival_to_rosette = self.getfloat(
-            "seedling_survival_to_rosette")
-        self.initial_rosette_population = self.getint(
-            "initial_rosette_population")
-        self.rosette_survival = self.getfloat("rosette_survival")
-        self.conversion_coefficient = self.getfloat("conversion_coefficient")
-        self.plant_dd_shape_par = self.getfloat("plant_dd_shape_par")
-        self.avg_eggs_per_plant = self.getfloat("avg_eggs_per_plant")
-
     @memoize_method
     def seedbank(self, gen):
         """

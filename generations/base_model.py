@@ -12,14 +12,16 @@ config.read(config_filename)
 
 
 class BaseModel(object):
+    #built in package for reading data from files, in this case, default parameters
     def config(self):
         return config
 
-    def getint(self, parameter):
-        return self.config().getint(self.__class__.__name__, parameter)
-
     def getfloat(self, parameter):
         return self.config().getfloat(self.__class__.__name__, parameter)
+
+    def __getattr__(self, attr):
+        #__getattr__ is a 'magic method' see: https://blog.rmotr.com/python-magic-methods-and-getattr-75cf896b3f88
+        return self.getfloat(attr)
 
     def make_table(self, number_of_gens, csv_filename):
         """

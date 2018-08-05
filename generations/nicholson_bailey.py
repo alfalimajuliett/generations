@@ -5,15 +5,6 @@ from .memoization import memoize_method
 
 
 class NicholsonBailey(BaseModel):
-    def __init__(self):
-        self.initial_host_population = self.getint("initial_host_population")
-        self.initial_parasitoid_population = self.getint(
-            "initial_parasitoid_population")
-        self.reproductive_rate = self.getfloat("reproductive_rate")
-        self.search_efficiency = self.getfloat("search_efficiency")
-        self.viable_eggs_per_parasitoid = self.getfloat(
-            "viable_eggs_per_parasitoid")
-
     @memoize_method
     def host_population_at_time(self, time):
         if time == 0:
