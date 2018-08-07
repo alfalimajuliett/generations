@@ -45,7 +45,6 @@ class Biennial(BaseModel):
             plant_biomass = self.fecundity_to_biomass * self.maximum_plant_fecundity / (
                 1 + self.plant_dd_shape_par * self.probability_of_germination *
                 self.seedling_survival_to_flowering * self.seedbank(gen - 1))
-            attack_rate = self.avg_eggs_per_plant / self.weevil(gen - 1)
             attrition_by_weevil = (
                 self.damage_function_shape * self.weevil_attack_rate *
                 self.weevil(gen - 1)) / plant_biomass
@@ -60,6 +59,8 @@ class Biennial(BaseModel):
         """
         if gen == 0:
             return self.weevil_population
+        elif self.weevil_population == 0:
+            return 0
         else:
             plant_biomass = self.fecundity_to_biomass * self.maximum_plant_fecundity / (
                 1 + self.plant_dd_shape_par * self.probability_of_germination *
