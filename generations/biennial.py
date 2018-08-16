@@ -16,8 +16,8 @@ class Biennial(BaseModel):
             probability_seeds_stay = (1 - self.probability_of_decay) * (
                 1 - self.probability_of_germination)
             dens_dependent = self.maximum_plant_fecundity / (
-                1 + self.plant_dd_shape_par * self.probability_of_germination *
-                self.seedling_survival_to_flowering * self.seedbank(gen - 1))
+                1 + self.plant_dd_shape_par *
+                (self.rosette(gen - 1) + self.flower(gen - 1)))
             previous_seeds = self.seedbank(gen - 1)
             return probability_seeds_stay * previous_seeds + self.flower(
                 gen - 1) * self.seed_incorporation_rate * dens_dependent
@@ -30,9 +30,8 @@ class Biennial(BaseModel):
         if gen == 0:
             return self.initial_rosette_population
         else:
-            return self.seedbank(
-                gen
-            ) * self.probability_of_germination * self.seedling_survival_to_rosette
+            seedlings = self.seedbank(gen) * self.probability_of_germination
+            return seedlings * self.seedling_survival_to_rosette
 
     @memoize_method
     def flower(self, gen):
@@ -42,12 +41,10 @@ class Biennial(BaseModel):
         if gen == 0:
             return self.initial_flower_population
         else:
-            plant_biomass = self.fecundity_to_biomass * self.maximum_plant_fecundity / (
-                1 + self.plant_dd_shape_par * self.probability_of_germination *
-                self.seedling_survival_to_flowering * self.seedbank(gen - 1))
+            rosette_density = self.plant_dd_shape_par * self.rosette(gen - 1)
             attrition_by_weevil = (
                 self.damage_function_shape * self.weevil_attack_rate *
-                self.weevil(gen - 1)) / plant_biomass
+                self.weevil(gen - 1)) / (1 + rosette_density)
             return self.rosette(gen - 1) * self.rosette_survival * math.e**(
                 -attrition_by_weevil)
 
@@ -59,18 +56,15 @@ class Biennial(BaseModel):
         """
         if gen == 0:
             return self.weevil_population
-        elif self.weevil_population == 0:
+        elif self.weevil(gen - 1) < 1:
             return 0
         else:
-            plant_biomass = self.fecundity_to_biomass * self.maximum_plant_fecundity / (
-                1 + self.plant_dd_shape_par * self.probability_of_germination *
-                self.seedling_survival_to_flowering * self.seedbank(gen - 1))
-            attack_rate = self.avg_eggs_per_plant / self.weevil(gen - 1)
+            rosette_density = self.plant_dd_shape_par * self.rosette(gen - 1)
             weevil_survival = self.larval_survival * math.e**(
-                -self.weevil_scramble_competition * attack_rate *
-                self.weevil(gen - 1)) / (plant_biomass)
+                -self.weevil_scramble_competition * self.weevil_attack_rate *
+                self.weevil(gen - 1) / (1 + rosette_density))
             return self.rosette(gen - 1) * self.weevil(
-                gen - 1) * attack_rate * weevil_survival
+                gen - 1) * self.weevil_attack_rate * weevil_survival
 
     def make_row(self, gen):
         Seeds = self.seedbank(gen)
@@ -90,4 +84,4 @@ class Biennial(BaseModel):
 
 
 if __name__ == '__main__':
-    Biennial().make_table(75, "bnl.csv")
+    Biennial().make_table(50, "bnl.csv")
