@@ -6,9 +6,9 @@ except ImportError:
     import ConfigParser as configparser  # type: ignore
 
 config = configparser.ConfigParser()
-config_filename = (os.path.join(
+default_config_filename = (os.path.join(
     os.path.dirname(__file__), "default_parameters.cfg"))
-config.read(config_filename)
+config.read([default_config_filename, "model_parameters.cfg"])
 
 
 class BaseModel(object):

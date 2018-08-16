@@ -18,13 +18,20 @@ Generations is available from the [Python Package Index](https://pypi.org/projec
     python -m generations.buckley
     python -m generations.biennial
 
+### Custom parameters
+
+This will create a copy of the configuration file for all population model modules in your working directory. The file will be named `model_parameters.cfg`.
+
+    python -m generations.create_config
+
+The user can then edit parameters to fit their desired ecological system. Model parameters will be loaded from the working directory into the population models at runtime.
+
 
 ## Development
 
 Generations source code is available on [GitHub](https://github.com/alfalimajuliett/generations).
 
     git clone https://github.com/alfalimajuliett/generations.git
-
 
 ### Testing
 
