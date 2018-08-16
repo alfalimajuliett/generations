@@ -6,13 +6,27 @@ A set of recursive population models for ecologists including:
 - Weed-herbivore coupled model for an annual plant that forms a seed bank from [Buckley et al. 2005](http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2664.2005.00991.x/epdf)
 - Weed-herbivore model for a biennial plant that forms a seed bank
 
+## Installation
+
+Generations is available from the [Python Package Index](https://pypi.org/project/generations/). It can be installed using pip:
+
+    pip install generations
+
 ## Running
 
     python -m generations.nicholson_bailey
     python -m generations.buckley
     python -m generations.biennial
 
-## Testing
+
+## Development
+
+Generations source code is available on [GitHub](https://github.com/alfalimajuliett/generations).
+
+    git clone https://github.com/alfalimajuliett/generations.git
+
+
+### Testing
 
     ./test.sh
 
@@ -24,7 +38,7 @@ This will run the unit tests. If you have [pipenv](https://docs.pipenv.org/), it
 - [`coverage`](https://github.com/nedbat/coveragepy): report on lines that are not covered by unit tests
 
 
-## Uploading to PyPI
+### Uploading to PyPI
 
 Install [pipenv](https://docs.pipenv.org/#install-pipenv-today) if you don't have it.
 
