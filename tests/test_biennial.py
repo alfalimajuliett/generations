@@ -11,8 +11,8 @@ class TestBiennial(unittest.TestCase):
     def test_seedbank(self):
         b = Biennial()
         self.assertEqual(1100, b.seedbank(0))
-        self.assertEqual(739.45, b.seedbank(1))
-        self.assertEqual(912.7398971168964, b.seedbank(2))
+        self.assertEqual(951.6279859484778, b.seedbank(1))
+        self.assertEqual(1250.6761145662022, b.seedbank(2))
 
     def test_is_slow_without_memoization(self):
         b = Biennial()
@@ -32,4 +32,4 @@ class TestBiennial(unittest.TestCase):
 
     def test_make_row_at_time_ten(self):
         b = Biennial()
-        self.assertEqual([10, 767, 62, 35, 914], b.make_row(10))
+        self.assertEqual([10, 688, 56, 23, 2769], b.make_row(10))

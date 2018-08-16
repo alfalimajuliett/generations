@@ -12,6 +12,14 @@ A set of recursive population models for ecologists including:
     python -m generations.buckley
     python -m generations.biennial
 
+### Custom parameters
+
+This will create a copy of the configuration file for all population model modules in your working directory. The file will be named `model_parameters.cfg`.
+
+    python -m generations.create_config
+
+The user can then edit parameters to fit their desired ecological system. Model parameters will be loaded from the working directory into the population models at runtime.
+
 ## Testing
 
     ./test.sh
