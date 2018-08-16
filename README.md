@@ -6,21 +6,28 @@ A set of recursive population models for ecologists including:
 - Weed-herbivore coupled model for an annual plant that forms a seed bank from [Buckley et al. 2005](http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2664.2005.00991.x/epdf)
 - Weed-herbivore model for a biennial plant that forms a seed bank
 
+
 ## Installation
 
-Generations is available from the [Python Package Index](https://pypi.org/project/generations/). It can be installed using pip:
+Generations is available from the [Python Package Index](https://pypi.org/project/generations/). It can be installed using `pip`:
 
     pip install generations
 
+
 ## Running
 
+Once installed, the user can run the various models in `generations` by entering the following commands. Python's `-m` flag imports and runs the specified module. Each population model in `generations` is in it's own module:
+
     python -m generations.nicholson_bailey
+
     python -m generations.buckley
+
     python -m generations.biennial
+
 
 ### Custom parameters
 
-This will create a copy of the configuration file for all population model modules in your working directory. The file will be named `model_parameters.cfg`.
+The user can also create a copy of the default configuration file for the population model modules in their working directory. The file will be named `model_parameters.cfg`.
 
     python -m generations.create_config
 
@@ -32,6 +39,7 @@ The user can then edit parameters to fit their desired ecological system. Model 
 Generations source code is available on [GitHub](https://github.com/alfalimajuliett/generations).
 
     git clone https://github.com/alfalimajuliett/generations.git
+
 
 ### Testing
 
