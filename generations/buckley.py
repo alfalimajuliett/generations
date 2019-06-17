@@ -63,3 +63,24 @@ class Buckley(BaseModel):
 
 if __name__ == '__main__':
     Buckley().make_table(75, "bk.csv")
+    from bokeh.plotting import figure, output_file, show
+    import pandas
+    data = pandas.read_csv("bk.csv")
+    # prepare some data
+    x = data["gen"]
+    y = data["Seeds"]
+    w = data["Weevils"]
+
+    # output to static HTML file
+    output_file("lines.html")
+
+    # create a new plot with a title and axis labels
+    p = figure(title="buckley.py", x_axis_label='time', y_axis_label='population', background_fill_color="#d9d9d9")
+
+    # add a line renderer with legend and line thickness
+    p.line(x, y/100, legend="seed.", line_width=3, color='#ffbb33')
+    p.line(x, w/100, legend="weevil.", line_width=3, color = '#6699ff')
+
+
+    # show the results
+    show(p)

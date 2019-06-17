@@ -85,3 +85,27 @@ class Biennial(BaseModel):
 
 if __name__ == '__main__':
     Biennial().make_table(50, "bnl.csv")
+    from bokeh.plotting import figure, output_file, show
+    import pandas
+    data = pandas.read_csv("bnl.csv")
+    # prepare some data
+    x = data["gen"]
+    y = data["Seeds"]
+    w = data["Weevils"]
+    r = data["Rosettes"]
+    f = data["Flowers"]
+
+    # output to static HTML file
+    output_file("lines.html")
+
+    # create a new plot with a title and axis labels
+    p = figure(title="biennial.py", x_axis_label='time', y_axis_label='population', background_fill_color="#d9d9d9")
+
+    # add a line renderer with legend and line thickness
+    p.line(x, y/100, legend="seed.", line_width=3, color='#ffbb33')
+    p.line(x, w/100, legend="weevil.", line_width=3, color = '#6699ff')
+    p.line(x, r, legend="rosettes.",line_width=3, color = '#00cc99')
+    p.line(x, f, legend="flowers.", line_width=3, color = '#ff8080')
+
+    # show the results
+    show(p)
