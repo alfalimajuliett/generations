@@ -17,12 +17,10 @@ class Buckley(BaseModel):
             probability_seeds_stay = (1 - self.probability_of_decay) * (
                 1 - self.probability_of_germination)
             dens_dependent = (
-                self.seedbank(gen - 1) * self.probability_of_germination *
+                self.probability_of_germination *
                 self.seedling_survival_to_flowering *
                 self.seed_incorporation_rate * self.maximum_plant_fecundity
-            ) / (1 + (
-                self.plant_dd_shape_par * self.probability_of_germination *
-                self.seedling_survival_to_flowering * self.seedbank(gen - 1)))
+            )
             plant_biomass = self.fecundity_to_biomass * self.maximum_plant_fecundity / (
                 1 + self.plant_dd_shape_par * self.probability_of_germination *
                 self.seedling_survival_to_flowering * self.seedbank(gen - 1))
@@ -30,7 +28,9 @@ class Buckley(BaseModel):
                 -self.damage_function_shape * self.weevil_attack_rate *
                 self.weevil(gen - 1)) / plant_biomass
             return (probability_seeds_stay * self.seedbank(gen - 1)
-                    ) + dens_dependent * math.e**(attrition_by_weevil)
+                    ) + (self.seedbank(gen -1) * dens_dependent)/ (1 + (
+                        self.plant_dd_shape_par * self.probability_of_germination *
+                        self.seedling_survival_to_flowering * self.seedbank(gen - 1))) * math.e**(attrition_by_weevil)
 
     @memoize_method
     def weevil(self, gen):
@@ -42,7 +42,7 @@ class Buckley(BaseModel):
             plant_biomass = self.fecundity_to_biomass * self.maximum_plant_fecundity / (
                 1 + self.plant_dd_shape_par * self.probability_of_germination *
                 self.seedling_survival_to_flowering * self.seedbank(gen - 1))
-            attack_rate = self.avg_eggs_per_plant / self.weevil(gen - 1)
+            attack_rate = 0.5
             weevil_survival = self.larval_survival * math.e**(
                 -self.weevil_scramble_competition * attack_rate *
                 self.weevil(gen - 1)) / (plant_biomass)
@@ -78,8 +78,8 @@ if __name__ == '__main__':
     p = figure(title="buckley.py", x_axis_label='time', y_axis_label='population', background_fill_color="#d9d9d9")
 
     # add a line renderer with legend and line thickness
-    p.line(x, y/100, legend="seed.", line_width=3, color='#ffbb33')
-    p.line(x, w/100, legend="weevil.", line_width=3, color = '#6699ff')
+    p.line(x, y, legend="seed.", line_width=3, color='#ffbb33')
+    p.line(x, w, legend="weevil.", line_width=3, color = '#6699ff')
 
 
     # show the results
