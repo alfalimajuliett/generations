@@ -24,6 +24,10 @@ Once installed, the user can run the various models in `generations` by entering
 
     python -m generations.biennial
 
+### Visualization
+
+Generations requires the [Bokeh](https://pypi.org/project/bokeh/) Python package to generate interactive plots of the simulation outputs in the browser. This functionality is attached to each modeling module. When the module runs, it automatically generates a .csv of the population densities for each organism at each time step Bokeh uses that .csv to automatically generate an html page with an interactive plot of the results in the user's browser. 
+
 
 ### Custom parameters
 
