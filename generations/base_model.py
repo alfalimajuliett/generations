@@ -6,13 +6,13 @@ except ImportError:
     import ConfigParser as configparser  # type: ignore
 
 config = configparser.ConfigParser()
-default_config_filename = (os.path.join(
-    os.path.dirname(__file__), "default_parameters.cfg"))
+default_config_filename = (os.path.join(os.path.dirname(__file__),
+                                        "default_parameters.cfg"))
 config.read([default_config_filename, "model_parameters.cfg"])
 
 
 class BaseModel(object):
-    #built in package for reading data from files, in this case, default parameters
+    #built in package for reading data from files, default parameters
     def config(self):
         return config
 

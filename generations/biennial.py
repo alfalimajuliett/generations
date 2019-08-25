@@ -35,16 +35,13 @@ class Biennial(BaseModel):
 
     @memoize_method
     def flower(self, gen):
-        """
-        flower is based on proportion of rosettes that survived with the rate of attrition by weevil population
-        """
         if gen == 0:
             return self.initial_flower_population
         else:
             rosette_density = self.plant_dd_shape_par * self.rosette(gen - 1)
             attrition_by_weevil = (
                 self.damage_function_shape * self.weevil_attack_rate *
-                self.weevil(gen - 1)) / 7.5*(1 + rosette_density)
+                self.weevil(gen - 1)) / 7.5 * (1 + rosette_density)
             return self.rosette(gen - 1) * self.rosette_survival * math.e**(
                 -attrition_by_weevil)
 
@@ -99,13 +96,16 @@ if __name__ == '__main__':
     output_file("lines.html")
 
     # create a new plot with a title and axis labels
-    p = figure(title="biennial.py", x_axis_label='time', y_axis_label='population', background_fill_color="#d9d9d9")
+    p = figure(title="biennial.py",
+               x_axis_label='time',
+               y_axis_label='population',
+               background_fill_color="#d9d9d9")
 
     # add a line renderer with legend and line thickness
     p.line(x, y, legend="seed.", line_width=3, color='#ffbb33')
-    p.line(x, w, legend="weevil.", line_width=3, color = '#6699ff')
-    p.line(x, r, legend="rosettes.",line_width=3, color = '#00cc99')
-    p.line(x, f, legend="flowers.", line_width=3, color = '#ff8080')
+    p.line(x, w, legend="weevil.", line_width=3, color='#6699ff')
+    p.line(x, r, legend="rosettes.", line_width=3, color='#00cc99')
+    p.line(x, f, legend="flowers.", line_width=3, color='#ff8080')
 
     # show the results
     show(p)

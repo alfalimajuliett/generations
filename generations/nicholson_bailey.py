@@ -50,11 +50,14 @@ if __name__ == '__main__':
     output_file("lines.html")
 
     # create a new plot with a title and axis labels
-    p = figure(title="nicholson_bailey.py", x_axis_label='time', y_axis_label='population', background_fill_color="#d9d9d9")
+    p = figure(title="nicholson_bailey.py",
+               x_axis_label='time',
+               y_axis_label='population',
+               background_fill_color="#d9d9d9")
 
     # add a line renderer with legend and line thickness
     p.line(x, h, legend="hosts.", line_width=3, color='#ffbb33')
-    p.line(x, w, legend="parasitoids.", line_width=3, color = '#6699ff')
+    p.line(x, w, legend="parasitoids.", line_width=3, color='#6699ff')
 
     # show the results
     show(p)
