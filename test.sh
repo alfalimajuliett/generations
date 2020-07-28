@@ -11,16 +11,16 @@ if command -v pipenv >/dev/null 2>&1; then
     echo Reformatting automatically...
     pipenv run yapf -i $(git ls-files | grep .py$)
 
-    #echo Checking types...
-    #pipenv run mypy generations tests
+    echo Checking types...
+    pipenv run mypy generations tests --ignore-missing-imports
 
     echo Running unit tests against multiple python versions and reporting coverage...
     pipenv run tox
 
     echo Running programs as an integration test...
-    python -m generations.nicholson_bailey
-    python -m generations.buckley
-    python -m generations.biennial
+    pipenv run python -m generations.nicholson_bailey
+    pipenv run python -m generations.buckley
+    pipenv run python -m generations.biennial
 
     echo Opening coverage report...
     open htmlcov/index.html # to browse coverage data in browser
