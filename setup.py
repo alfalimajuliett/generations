@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="generations",
-    version="1.2.0",
+    version="1.3.0",
     author="M. Marek-Spartz",
     author_email="patt0335@umn.edu",
     description="A set of recursive population models for ecologists",
