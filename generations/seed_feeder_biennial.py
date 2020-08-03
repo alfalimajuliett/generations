@@ -13,15 +13,19 @@ class SeedFeederBiennial(BaseModel):
         if gen == 0:
             return self.initial_seedbank
         else:
-            attrition_by_weevil = self.maximum_plant_fecundity*math.e**(-
-                self.seed_weevil_damage_function_shape * self.seed_weevil_attack_rate *
-                self.seed_weevil(gen - 1)) / (1 + self.flower(gen-1)) #multiplied by fecundity
+            attrition_by_weevil = self.maximum_plant_fecundity * math.e**(
+                -self.seed_weevil_damage_function_shape *
+                self.seed_weevil_attack_rate * self.seed_weevil(gen - 1)) / (
+                    1 + self.flower(gen - 1))  #multiplied by fecundity
             probability_seeds_stay = (1 - self.probability_of_decay) * (
                 1 - self.probability_of_germination)
-            dens_dependent = (self.flower(gen-1)* self.seed_incorporation_rate) / (1 + self.plant_dd_shape_par * (self.rosette(gen - 1) + self.flower(gen - 1)))
+            dens_dependent = (
+                self.flower(gen - 1) * self.seed_incorporation_rate) / (
+                    1 + self.plant_dd_shape_par *
+                    (self.rosette(gen - 1) + self.flower(gen - 1)))
             previous_seeds = self.seedbank(gen - 1)
 
-            return probability_seeds_stay * previous_seeds + attrition_by_weevil + dens_dependent
+            return (probability_seeds_stay * previous_seeds + dens_dependent)*attrition_by_weevil
 
     @memoize_method
     def rosette(self, gen):
@@ -55,7 +59,12 @@ class SeedFeederBiennial(BaseModel):
         elif self.seed_weevil(gen - 1) < 1:
             return 0
         else:
-            return self.flower(gen - 1) * self.seed_weevil(gen - 1) * self.seed_weevil_attack_rate * self.larval_survival * math.e**(-self.seed_weevil_attack_rate * self.seed_weevil(gen - 1)/1 + ((self.flower(gen)/self.maximum_plant_fecundity)))
+            return self.flower(gen - 1) * self.seed_weevil(
+                gen - 1
+            ) * self.seed_weevil_attack_rate * self.larval_survival * math.e**(
+                -self.seed_weevil_attack_rate * self.seed_weevil(gen - 1) / 1 +
+                ((self.flower(gen) / self.maximum_plant_fecundity)))
+
     def make_row(self, gen):
         Seeds = self.seedbank(gen)
         Rosettes = self.rosette(gen)

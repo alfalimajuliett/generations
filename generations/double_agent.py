@@ -8,13 +8,16 @@ from .memoization import memoize_method
 class DoubleAgent(Biennial, SeedFeederBiennial):
     @memoize_method
     def seedbank(self, gen):
-        return SeedFeederBiennial.seedbank(self, gen) # how to call a method in another class on self. similar to binding 'this' to another instance
+        return SeedFeederBiennial.seedbank(
+            self, gen
+        )  # how to call a method in another class on self. similar to binding 'this' to another instance
 
     #rosette is the same in both inhereted models
 
     @memoize_method
     def flower(self, gen):
         return Biennial.flower(self, gen)
+
 
 #weevils and seed_weevil methods ome from models Biennial and SeedFeederBiennial
 
@@ -32,12 +35,12 @@ class DoubleAgent(Biennial, SeedFeederBiennial):
             int(round(Flowers)),
             int(round(Weevils)),
             int(round(SeedWeevils))
-
         ]
 
     def make_headers(self):
-        return ["gen", "Seeds", "Rosettes", "Flowers", "Weevils", "SeedWeevils"]
-
+        return [
+            "gen", "Seeds", "Rosettes", "Flowers", "Weevils", "SeedWeevils"
+        ]
 
 if __name__ == '__main__':
     DoubleAgent().make_table(50, "dblag.csv")
