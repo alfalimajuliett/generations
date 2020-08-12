@@ -5,8 +5,8 @@ A set of recursive population models for ecologists including:
 - Nicholson Bailey host-parasitoid model. All subsequent weed-herbivore models in the package take the form of N-B equations.
 - Weed-herbivore coupled model for an annual plant that forms a seed bank from [Buckley et al. 2005](http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2664.2005.00991.x/epdf).
 - Weed-herbivore model for a biennial plant that forms a seed bank, with a herbivore that tunnels the stem/root tissue of the second-year rosette.
--Weed-herbivore model for a biennial that forms a seed bank, with a herbivore that consumes seed of the second-year flowering plant.
--The final model inherits from both the biennial models envisage a plant population where the first-year and second-year stage is attacked by a herbivore. 
+- Weed-herbivore model for a biennial that forms a seed bank, with a herbivore that consumes seed of the second-year flowering plant.
+- The final model inherits from both the biennial models envisage a plant population where the first-year and second-year stage is attacked by a herbivore. 
 
 
 ## Installation
