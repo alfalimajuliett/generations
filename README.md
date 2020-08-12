@@ -2,9 +2,11 @@
 
 A set of recursive population models for ecologists including:
 
-- Nicholson Bailey host-parasitoid model
-- Weed-herbivore coupled model for an annual plant that forms a seed bank from [Buckley et al. 2005](http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2664.2005.00991.x/epdf)
-- Weed-herbivore model for a biennial plant that forms a seed bank
+- Nicholson Bailey host-parasitoid model. All subsequent weed-herbivore models in the package take the form of N-B equations.
+- Weed-herbivore coupled model for an annual plant that forms a seed bank from [Buckley et al. 2005](http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2664.2005.00991.x/epdf).
+- Weed-herbivore model for a biennial plant that forms a seed bank, with a herbivore that tunnels the stem/root tissue of the second-year rosette.
+-Weed-herbivore model for a biennial that forms a seed bank, with a herbivore that consumes seed of the second-year flowering plant.
+-The final model inherits from both the biennial models envisage a plant population where the first-year and second-year stage is attacked by a herbivore. 
 
 
 ## Installation
@@ -23,10 +25,14 @@ Once installed, the user can run the various models in `generations` by entering
     python -m generations.buckley
 
     python -m generations.biennial
+    
+    python -m generations.seed_feeder_biennial
+    
+    python -m generations.double_agent
 
 ### Visualization
 
-Generations requires the [Bokeh](https://pypi.org/project/bokeh/) Python package to generate interactive plots of the simulation outputs in the browser. This functionality is attached to each modeling module. When the module runs, it automatically generates a .csv of the population densities for each organism at each time step Bokeh uses that .csv to automatically generate an html page with an interactive plot of the results in the user's browser. 
+Generations requires the [Bokeh](https://pypi.org/project/bokeh/) Python package to generate interactive plots of the simulation outputs in the browser. This functionality is attached to each modeling module. When the module runs, it automatically generates a .csv of the population densities for each organism at each time step. Bokeh uses that .csv to automatically generate an html page with an interactive plot of the results in the user's browser. 
 
 
 ### Custom parameters
