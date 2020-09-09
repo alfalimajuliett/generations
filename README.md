@@ -11,6 +11,10 @@ A set of recursive population models for ecologists including:
 
 ## Installation
 
+If needed, install `pip` (the Preferred Installer Program) using easy_install:
+
+    easy_install pip
+
 Generations is available from the [Python Package Index](https://pypi.org/project/generations/). It can be installed using `pip`:
 
     pip install generations
