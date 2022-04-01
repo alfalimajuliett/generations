@@ -17,15 +17,16 @@ class SeedFeederBiennial(BaseModel):
                 -self.seed_weevil_damage_function_shape *
                 self.seed_weevil_attack_rate * self.seed_weevil(gen - 1)) / (
                     1 + self.flower(gen - 1))  #multiplied by fecundity
-            probability_seeds_stay = (1 - self.probability_of_decay) * (
-                1 - self.probability_of_germination)
+            probability_seeds_stay = (1 - self.probability_of_decay -
+                                      self.probability_of_germination)
             dens_dependent = (
                 self.flower(gen - 1) * self.seed_incorporation_rate) / (
                     1 + self.plant_dd_shape_par *
                     (self.rosette(gen - 1) + self.flower(gen - 1)))
             previous_seeds = self.seedbank(gen - 1)
 
-            return (probability_seeds_stay * previous_seeds + dens_dependent)*attrition_by_weevil
+            return (probability_seeds_stay *
+                    previous_seeds) + dens_dependent * attrition_by_weevil
 
     @memoize_method
     def rosette(self, gen):
@@ -83,7 +84,7 @@ class SeedFeederBiennial(BaseModel):
 
 
 if __name__ == '__main__':
-    SeedFeederBiennial().make_table(50, "sw.csv")
+    SeedFeederBiennial().make_table(20, "sw.csv")
     from bokeh.plotting import figure, output_file, show
     import pandas
     data = pandas.read_csv("sw.csv")
